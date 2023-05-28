@@ -1,0 +1,97 @@
+public class Variable {
+    private int [] domain;
+
+    public Variable()
+    {
+        domain=null;
+    }
+
+    public int[] getListOfInitialDomain()
+    {
+       return domain;
+    }
+
+    public int[] getListOfDomain(Board board, cell emptyCell)
+    {
+        cell[][] existingBoard= board.getBoardState();
+        int num= board.getNumber();
+
+        int getX= emptyCell.getPosX();
+        int getY= emptyCell.getPosY();
+       // System.out.println("ekhane check dei");
+        //System.out.println(getX+ " "+ getY);
+        int rowValCount=0, colValCount=0;
+
+        for (int col = 0; col < num; col++) {
+            if((existingBoard[getX][col]).getValue()!=0)
+                rowValCount++;
+
+        }
+
+        for (int row = 0; row < num; row++) {
+            if((existingBoard[row][getY]).getValue()!=0)
+                colValCount++;
+        }
+
+     //   System.out.println("Rowvalcount  " + rowValCount);
+       // System.out.println("Colvalcount  " + colValCount);
+
+        int[] rowColExistingValues= new int [rowValCount+colValCount];
+
+            int index=0;
+            for (int col = 0; col < num; col++) {
+                if((existingBoard[getX][col]).getValue()!=0) {
+                    rowColExistingValues[index] = existingBoard[getX][col].getValue();
+                    index++;
+                }
+            }
+            for (int row = 0; row < num; row++) {
+                if ((existingBoard[row][getY]).getValue() != 0) {
+                    rowColExistingValues[index] = existingBoard[row][getY].getValue();
+                    index++;
+                }
+            }
+
+
+    //    System.out.print("value print: ");
+//        for (int i = 0; i < rowColExistingValues.length; i++) {
+//            System.out.print(rowColExistingValues[i]+ " ");
+//        }
+      //  System.out.println();
+        int distinctValCount=0;
+
+        for (int i = 0; i < rowColExistingValues.length; i++) {
+            int dup=0;
+            for (int j = i+1; j < rowColExistingValues.length; j++) {
+                if(rowColExistingValues[i]==rowColExistingValues[j])
+                dup=1;
+            }
+            if(dup==0)
+                distinctValCount++;
+        }
+        //System.out.println("distinct value "+ distinctValCount);
+
+        int domainSize= num-distinctValCount;
+        int[] domainList= new int[domainSize];
+
+        int domIndex=0;
+        for (int i = 1; i <= num; i++) {
+            int exist=0;
+            for (int j = 0; j < rowColExistingValues.length; j++) {
+                if(rowColExistingValues[j]==i)
+                {
+                    exist=1;
+                }
+            }
+            if(exist==0) {
+                domainList[domIndex] = i;
+                domIndex++;
+            }
+        }
+
+        return domainList;
+
+    }
+
+
+}

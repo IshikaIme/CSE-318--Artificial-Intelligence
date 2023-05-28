@@ -1,0 +1,9 @@
+eevrything was numbered from 1( except courses taken in student), so 0th element is null. No need to iterate from 0, cause nullpointer exception
+
+
+//edge between course nao lagte pare
+
+1. Largest degree, enrollment - graph coloring
+2. random
+3. saturation - ager moto , and test
+4. penalty calculation

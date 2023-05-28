@@ -1,0 +1,28 @@
+    
+"""
+        # Loop over all cells within one row and column
+        for i in range(row - 1, row + 2):
+            for j in range(col - 1, col + 2):
+
+                # Ignore the cell itself
+                if (i, j) == cell:
+                    continue
+
+                # Update count if cell in bounds and is mine
+                if 0 <= i < self.height and 0 <= j < self.width:
+                    if self.board[i][j]:
+                        count += 1
+"""
+
+        AllPossibleMoves=[]
+        for i in range(self.height):
+            for j in range(self.width):
+                if(i,j) not in self.moves_made and (i,j) not in self.mines: # '''if not moves safe checked or not a mine'''
+                    random_cell= (i,j)
+                    AllPossibleMoves.append(random_cell)
+                else:
+                    continue
+        if len(AllPossibleMoves)!=0:
+            return random.choice(AllPossibleMoves)
+        else:
+            return None

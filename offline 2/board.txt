@@ -1,0 +1,129 @@
+import java.util.Queue;
+
+public class Board {
+     private int number;
+     private cell[][] boardState;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public cell[][] getBoardState() {
+        return boardState;
+    }
+
+    public cell getBoardState(int row, int col) {
+        return boardState[row][col];
+    }
+
+    public Board(int num)
+     {
+         this.number =num;
+         boardState= new cell[number][number];
+         for (int i = 0; i < number; i++) {
+             for (int j = 0; j < number; j++) {
+                 boardState[i][j]= new cell(i,j,0);
+             }
+         }
+
+     }
+
+    public void assignBoard(int n,String [] lines)
+    {
+        String inputLine;
+        String[] vals;
+        cell[][] newBoard= new cell[n][n];
+
+
+        for (int i = 0; i < number; i++) {
+            inputLine=removeLastChar(lines[i]);
+            vals= inputLine.split(",");
+            for (int j = 0; j < number; j++) {
+                cell newCell= new cell(i,j,Integer.parseInt(vals[j]));
+                newBoard[i][j]= newCell;
+            }
+
+        }
+        this.boardState=newBoard;
+    }
+
+
+    private String removeLastChar(String s)
+    {
+        return s.substring(0, s.length() - 1);
+    }
+
+
+    public void printBoard()
+     {
+         for(int i = 0; i< number; i++)
+         {
+             for (int j = 0; j < number; j++) {
+                 System.out.print(boardState[i][j].getValue()+ " ");
+             }
+             System.out.println();
+         }
+     }
+
+     public void solveBoard(String vah, Board newBoard)
+     {
+         if (vah=="VAH1")
+             this.solveBoardUsingVAH1(newBoard);
+     }
+
+     public cell getMinDomain(Board NB, cell[] emptyCells)
+     {
+         int cellNumbers= emptyCells.length;
+         Variable var = new Variable();
+         int minCount=100000;
+         cell minCell= null;
+
+         for (int i = 0; i < cellNumbers; i++) {
+             int [] domlist= var.getListOfDomain(NB, emptyCells[i] );
+             int domCount= domlist.length;
+             if(domCount<minCount) {
+                 minCount = domCount;
+                 minCell= emptyCells[i];
+             }
+         }
+         return minCell;
+     }
+
+     public cell[] countEmptyCells(Board givenBoard)
+     {
+         cell[][] boardArray= givenBoard.getBoardState();
+         int n= givenBoard.getNumber();
+         int emptyCount=0;
+         for (int i = 0; i <n; i++) {
+             for (int j = 0; j < n; j++) {
+                 if(boardArray[i][j].getValue()==0)
+                     emptyCount++;
+             }
+         }
+         cell[] emptyArrays = new cell[emptyCount];
+         int index=0;
+         for (int i = 0; i <n; i++) {
+             for (int j = 0; j < n; j++) {
+                 if(boardArray[i][j].getValue()==0)
+                     emptyArrays[index]= new cell(i,j,0);
+                     index++;
+             }
+         }
+         return emptyArrays;
+     }
+
+    public Board solveBoardUsingVAH1(Board NB)
+    {
+      Board newboard= NB;
+      Variable vari = new Variable();
+      cell[] emptyCells= newboard.countEmptyCells(newboard);
+
+      cell firstTobePicked = newboard.getMinDomain(newboard, emptyCells);
+      int[] domToPick = vari.getListOfDomain(newboard, firstTobePicked);
+
+}
+
+
+    }
+
+}
